@@ -1918,7 +1918,7 @@ mod tests_fess {
 
 	#[test]
 	fn reserve_asset_relay_para() {
-		let multiloc = VersionedMultiLocation::V1(MultiLocation::new(1, Junctions::X1(Junction::Parachain(1001))));
+		let multiloc = VersionedMultiLocation::V1(MultiLocation::new(0, Junctions::X1(Junction::Parachain(1001))));
 		let dest: Box<VersionedMultiLocation> = Box::new(multiloc);
 	
 		let id: [u8; 32] = [
@@ -1926,7 +1926,6 @@ mod tests_fess {
 			];
 	
 		let beneficiary = Box::new(VersionedMultiLocation::V1(MultiLocation::new(0, Junctions::X1(Junction::AccountId32{network: Any, id: id}))));
-	
 		
 		let asset = MultiAsset {id: AssetId::Concrete(MultiLocation::new(0, Junctions::Here)), fun: Fungible(100000000000)};
 	
