@@ -1914,12 +1914,62 @@ sp_api::impl_runtime_apis! {
 mod tests_fess {
 	use super::*;
 	use sp_runtime::assert_eq_error_rate;
+	use xcm::{VersionedMultiAssets, VersionedMultiLocation, VersionedXcm, v1};
 
 	#[test]
-	fn signed_deposit_is_sensible() {
-		// ensure this number does not change, or that it is checked after each change.
-		// a 1 MB solution should need around 0.16 KSM deposit
-		let deposit = SignedDepositBase::get() + (SignedDepositByte::get() * 1024 * 1024);
-		assert_eq_error_rate!(deposit, UNITS * 16 / 100, UNITS / 100);
-	}
+	fn reserve_asset_relay_para() {
+		let multiloc = VersionedMultiLocation::V1(MultiLocation::new(1, Junctions::X1(Junction::Parachain(1001))));
+		let dest: Box<VersionedMultiLocation> = Box::new(multiloc);
+	
+		let id: [u8; 32] = [
+				230, 89, 167, 161, 98, 140, 221, 147, 254, 188, 4, 164, 224, 100, 110, 162, 14, 159, 95, 12, 224, 151, 217, 160, 82, 144, 212, 169, 224, 84, 223, 78,
+			];
+	
+		let beneficiary = Box::new(VersionedMultiLocation::V1(MultiLocation::new(0, Junctions::X1(Junction::AccountId32{network: Any, id: id}))));
+	
+		
+		let asset = MultiAsset {id: AssetId::Concrete(MultiLocation::new(0, Junctions::Here)), fun: Fungible(100000000000)};
+	
+		let asset_vers = Box::new(VersionedMultiAssets::V1(MultiAssets::from(vec![asset.clone()])));
+
+		let call= Call::XcmPallet(pallet_xcm::Call::reserve_transfer_assets(dest, beneficiary, asset_vers, 0, 5000000));
+
+		println!("{:?}", call.encode());
+		panic!("aaa");
+	  }
+	
+	  fn reserve_asset_para_relay() {
+		let multiloc = VersionedMultiLocation::V1(MultiLocation::new(1, Junctions::Here));
+		let dest: Box<VersionedMultiLocation> = Box::new(multiloc);
+	
+		let id: [u8; 32] = [
+				230, 89, 167, 161, 98, 140, 221, 147, 254, 188, 4, 164, 224, 100, 110, 162, 14, 159, 95, 12, 224, 151, 217, 160, 82, 144, 212, 169, 224, 84, 223, 78,
+			];
+	
+		let beneficiary = Box::new(VersionedMultiLocation::V1(MultiLocation::new(0, Junctions::X1(Junction::AccountId32{network: Any, id: id}))));
+	
+		
+		let asset = MultiAsset {id: AssetId::Concrete(MultiLocation::new(1, Junctions::Here)), fun: Fungible(1000000000000)};
+	
+		let asset_vers = Box::new(VersionedMultiAssets::V1(MultiAssets::from(vec![asset.clone()])));
+		// let xcm_call = v1::Xcm::TransferAsset{ assets: MultiAssets::from(vec![asset.clone()]), beneficiary: MultiLocation::new(0, 
+		//   Junctions::X1(Junction::AccountId32{network: Any, id: id})) }; 
+	
+		// let effects = vec![
+		//   v1::Order::<()>::BuyExecution{debt: 5000000000, 
+		// 	fees: MultiAsset {id: AssetId::Concrete(MultiLocation::new(0, Junctions::Here)), fun: Fungible(1000000000000)}, 
+		// 	halt_on_error: true, instructions: vec![], weight: 5000000000},
+		//   v1::Order::<()>::DepositAsset{assets: MultiAssetFilter::Wild(WildMultiAsset::All), beneficiary: MultiLocation::new(0, 
+		// 	Junctions::X1(Junction::AccountId32{network: Any, id: id})), max_assets: 1 }
+		// ];
+		  
+		// let xcm_withdraw = v1::Xcm::WithdrawAsset{assets: MultiAssets::from(vec![asset.clone()]), effects};
+		// let inner_mess = VersionedXcm::<()>::V1(xcm_withdraw);
+		// let message: Box<VersionedXcm<()>> = Box::new(inner_mess);
+	
+		
+		let call= Call::XcmPallet(pallet_xcm::Call::reserve_transfer_assets(dest, beneficiary, asset_vers, 0, 5000000));
+		println!("{:?}", call.encode());
+		panic!("aaa");
+	  }
 }
