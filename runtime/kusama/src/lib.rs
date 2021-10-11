@@ -2007,7 +2007,7 @@ mod tests_fess {
 			effects,
 		}; 
 
-		let call= Call::XcmPallet(pallet_xcm::Call::execute{message: Box::new(VersionedXcm::<()>::V1(local_xcm)), max_weight: 3000000000)};
+		let call= Call::XcmPallet(pallet_xcm::Call::execute(Box::new(VersionedXcm::<()>::V1(local_xcm)), 3000000000));
 
 		println!("{:?}", call.encode());
 		panic!("aaa");
