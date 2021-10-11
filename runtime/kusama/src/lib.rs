@@ -1916,7 +1916,6 @@ mod tests_fess {
 	use sp_runtime::assert_eq_error_rate;
 	use xcm::{VersionedMultiAssets, VersionedMultiLocation, VersionedXcm, v1};
 
-	#[test]
 	fn reserve_asset_relay_para() {
 		let multiloc = VersionedMultiLocation::V1(MultiLocation::new(0, Junctions::X1(Junction::Parachain(1001))));
 		let dest: Box<VersionedMultiLocation> = Box::new(multiloc);
@@ -1935,9 +1934,9 @@ mod tests_fess {
 
 		println!("{:?}", call.encode());
 		panic!("aaa");
-	  }
+	}
 	
-	  fn reserve_asset_para_relay() {
+	fn reserve_asset_para_relay() {
 		let multiloc = VersionedMultiLocation::V1(MultiLocation::new(1, Junctions::Here));
 		let dest: Box<VersionedMultiLocation> = Box::new(multiloc);
 	
@@ -1961,7 +1960,7 @@ mod tests_fess {
 		//   v1::Order::<()>::DepositAsset{assets: MultiAssetFilter::Wild(WildMultiAsset::All), beneficiary: MultiLocation::new(0, 
 		// 	Junctions::X1(Junction::AccountId32{network: Any, id: id})), max_assets: 1 }
 		// ];
-		  
+			
 		// let xcm_withdraw = v1::Xcm::WithdrawAsset{assets: MultiAssets::from(vec![asset.clone()]), effects};
 		// let inner_mess = VersionedXcm::<()>::V1(xcm_withdraw);
 		// let message: Box<VersionedXcm<()>> = Box::new(inner_mess);
@@ -1970,5 +1969,47 @@ mod tests_fess {
 		let call= Call::XcmPallet(pallet_xcm::Call::reserve_transfer_assets(dest, beneficiary, asset_vers, 0, 5000000));
 		println!("{:?}", call.encode());
 		panic!("aaa");
-	  }
+	}
+
+	#[test]
+	fn initiate_withdraw_reserve() {
+		let id: [u8; 32] = [
+				230, 89, 167, 161, 98, 140, 221, 147, 254, 188, 4, 164, 224, 100, 110, 162, 14, 159, 95, 12, 224, 151, 217, 160, 82, 144, 212, 169, 224, 84, 223, 78,
+		];
+
+		let asset = MultiAsset {id: AssetId::Concrete(MultiLocation::new(1, Junctions::Here)), fun: Fungible(10000000000)};
+		let assets = MultiAssets::from(vec![asset.clone()]);
+
+		let buy_execution = v1::Order::<()>::BuyExecution {
+				debt: 10000000000, 
+				fees: MultiAsset {id: AssetId::Concrete(MultiLocation::new(0, Junctions::Here)), fun: Fungible(10000000000)}, 
+				halt_on_error: false,
+				instructions: vec![],
+				weight: 3000000000
+		};
+
+		let deposit_asset = v1::Order::<()>::DepositAsset {
+			assets: MultiAssetFilter::Wild(WildMultiAsset::All),
+			beneficiary: MultiLocation::new(0, Junctions::X1(Junction::AccountId32{network: Any, id: id})), max_assets: 1
+		};
+
+		let effects = vec![v1::Order::<()>::InitiateReserveWithdraw {
+			assets: MultiAssetFilter::Wild(WildMultiAsset::All),
+			reserve: MultiLocation::new(1, Junctions::Here),
+			effects: vec![
+			buy_execution,
+			deposit_asset,
+			],
+		}];
+
+		let local_xcm = v1::Xcm::WithdrawAsset {
+			assets,
+			effects,
+		}; 
+
+		let call= Call::XcmPallet(pallet_xcm::Call::execute{message: Box::new(VersionedXcm::<()>::V1(local_xcm)), max_weight: 3000000000)};
+
+		println!("{:?}", call.encode());
+		panic!("aaa");
+	}
 }
