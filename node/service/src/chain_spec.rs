@@ -1761,9 +1761,23 @@ fn kusama_local_testnet_genesis(wasm_binary: &[u8]) -> kusama::GenesisConfig {
 		vec![
 			get_authority_keys_from_seed_no_beefy("Alice"),
 			get_authority_keys_from_seed_no_beefy("Bob"),
+			get_authority_keys_from_seed_no_beefy("Charlie"),
+			get_authority_keys_from_seed_no_beefy("Dave"),
+			get_authority_keys_from_seed_no_beefy("Eve"),
 		],
 		get_account_id_from_seed::<sr25519::Public>("Alice"),
-		None,
+		Some(vec![
+			get_account_id_from_seed::<sr25519::Public>("Alice"),
+			get_account_id_from_seed::<sr25519::Public>(&format!("{}//stash", "Alice")),
+			get_account_id_from_seed::<sr25519::Public>("Bob"),
+			get_account_id_from_seed::<sr25519::Public>(&format!("{}//stash", "Bob")),
+			get_account_id_from_seed::<sr25519::Public>("Charlie"),
+			get_account_id_from_seed::<sr25519::Public>(&format!("{}//stash", "Charlie")),
+			get_account_id_from_seed::<sr25519::Public>("Dave"),
+			get_account_id_from_seed::<sr25519::Public>(&format!("{}//stash", "Dave")),
+			get_account_id_from_seed::<sr25519::Public>("Eve"),
+			get_account_id_from_seed::<sr25519::Public>(&format!("{}//stash", "Eve")),
+		]),
 	)
 }
 
