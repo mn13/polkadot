@@ -29,7 +29,7 @@ use primitives::v1::{
 	ValidationCode, ValidationCodeHash, ValidatorId, ValidatorIndex,
 };
 use runtime_common::{
-	auctions, claims, crowdloan, impls::DealWithFees, paras_registrar, slots, xcm_sender,
+	auctions, claims, crowdloan, impls::DealWithFees, paras_registrar, paras_sudo_wrapper, slots, xcm_sender,
 	BlockHashCount, BlockLength, BlockWeights, CurrencyToVote, OffchainSolutionLengthLimit,
 	OffchainSolutionWeightLimit, RocksDbWeight, SlowAdjustingFeeUpdate, ToAuthor,
 };
@@ -1424,6 +1424,13 @@ impl pallet_gilt::Config for Runtime {
 	type WeightInfo = weights::pallet_gilt::WeightInfo<Runtime>;
 }
 
+impl sudo::Config for Runtime {
+	type Event = Event;
+	type Call = Call;
+}
+
+impl paras_sudo_wrapper::Config for Runtime {}
+
 construct_runtime! {
 	pub enum Runtime where
 		Block = Block,
@@ -1523,6 +1530,8 @@ construct_runtime! {
 
 		// Pallet for sending XCM.
 		XcmPallet: pallet_xcm::{Pallet, Call, Storage, Event<T>, Origin} = 99,
+		ParasSudoWrapper: paras_sudo_wrapper::{Pallet, Call} = 97,
+		Sudo: sudo::{Pallet, Call, Config<T>, Storage, Event<T>} = 98,
 	}
 }
 

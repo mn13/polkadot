@@ -90,6 +90,12 @@ xcm = { package = "xcm", path = "../../xcm", default-features = false }
 xcm-executor = { package = "xcm-executor", path = "../../xcm/xcm-executor", default-features = false }
 xcm-builder = { package = "xcm-builder", path = "../../xcm/xcm-builder", default-features = false }
 
+[dependencies.sudo]
+default-features = false
+git = "https://github.com/paritytech/substrate"
+package = "pallet-sudo"
+branch = "polkadot-v0.9.11"
+
 [dev-dependencies]
 hex-literal = "0.3.3"
 tiny-keccak = "2.0.2"
@@ -176,6 +182,7 @@ std = [
 	"xcm-builder/std",
 	"frame-election-provider-support/std",
 	"pallet-bags-list/std",
+	"sudo/std",
 ]
 runtime-benchmarks = [
 	"runtime-common/runtime-benchmarks",
