@@ -744,6 +744,7 @@ fn kusama_staging_testnet_config_genesis(wasm_binary: &[u8]) -> kusama::GenesisC
 		gilt: Default::default(),
 		paras: Default::default(),
 		xcm_pallet: kusama::XcmPalletConfig { safe_xcm_version: Some(2) },
+		sudo: kusama::SudoConfig { key: initial_authorities[0].0.clone() }
 	}
 }
 
@@ -1394,6 +1395,7 @@ pub fn kusama_testnet_genesis(
 		gilt: Default::default(),
 		paras: Default::default(),
 		xcm_pallet: kusama::XcmPalletConfig { safe_xcm_version: Some(2) },
+		sudo: kusama::SudoConfig { key: _root_key },
 	}
 }
 
