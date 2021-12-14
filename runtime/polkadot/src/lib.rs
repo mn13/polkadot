@@ -1440,6 +1440,11 @@ impl pallet_xcm::Config for Runtime {
 	type AdvertisedXcmVersion = AdvertisedXcmVersion;
 }
 
+impl sudo::Config for Runtime {
+	type Event = Event;
+	type Call = Call;
+}
+
 construct_runtime! {
 	pub enum Runtime where
 		Block = Block,
@@ -1526,6 +1531,7 @@ construct_runtime! {
 
 		// Pallet for sending XCM.
 		XcmPallet: pallet_xcm::{Pallet, Call, Storage, Event<T>, Origin, Config} = 99,
+		Sudo: sudo::{Pallet, Call, Config<T>, Storage, Event<T>} = 100,
 	}
 }
 
