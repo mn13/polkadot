@@ -366,7 +366,7 @@ fn polkadot_staging_testnet_config_genesis(wasm_binary: &[u8]) -> polkadot::Gene
 		},
 		paras: Default::default(),
 		xcm_pallet: polkadot::XcmPalletConfig { safe_xcm_version: Some(2) },
-		sudo: kusama::SudoConfig { key: initial_authorities[0].0.clone() }
+		sudo: polkadot::SudoConfig { key: initial_authorities[0].0.clone() }
 	}
 }
 
