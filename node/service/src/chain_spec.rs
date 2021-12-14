@@ -1310,6 +1310,7 @@ pub fn polkadot_testnet_genesis(
 		},
 		paras: Default::default(),
 		xcm_pallet: polkadot::XcmPalletConfig { safe_xcm_version: Some(2) },
+		sudo: polkadot::SudoConfig { key: initial_authorities[0].0.clone() }
 	}
 }
 
