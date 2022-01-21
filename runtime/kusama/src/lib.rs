@@ -51,7 +51,7 @@ use frame_support::{
 	construct_runtime, match_type, parameter_types,
 	traits::{
 		Contains, Everything, InstanceFilter, KeyOwnerProofSystem, LockIdentifier, Nothing,
-		PrivilegeCmp,
+		OnRuntimeUpgrade, PrivilegeCmp,
 	},
 	weights::Weight,
 	PalletId, RuntimeDebug,
@@ -119,7 +119,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("kusama"),
 	impl_name: create_runtime_str!("parity-kusama"),
 	authoring_version: 2,
-	spec_version: 9150,
+	spec_version: 9151,
 	impl_version: 0,
 	#[cfg(not(feature = "disable-runtime-api"))]
 	apis: RUNTIME_API_VERSIONS,
@@ -555,6 +555,7 @@ impl pallet_staking::Config for Runtime {
 	type OffendingValidatorsThreshold = OffendingValidatorsThreshold;
 	// Use the nominators map to iter voters, but also keep bags-list up-to-date.
 	type SortedListProvider = BagsList;
+	type BenchmarkingConfig = runtime_common::StakingBenchmarkingConfig;
 	type WeightInfo = weights::pallet_staking::WeightInfo<Runtime>;
 }
 

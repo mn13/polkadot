@@ -116,7 +116,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("westend"),
 	impl_name: create_runtime_str!("parity-westend"),
 	authoring_version: 2,
-	spec_version: 9150,
+	spec_version: 9151,
 	impl_version: 0,
 	#[cfg(not(feature = "disable-runtime-api"))]
 	apis: RUNTIME_API_VERSIONS,
@@ -457,6 +457,7 @@ impl pallet_staking::Config for Runtime {
 	type GenesisElectionProvider = runtime_common::elections::GenesisElectionOf<Self>;
 	// Use the nominators map to iter voters, but also keep bags-list up-to-date.
 	type SortedListProvider = BagsList;
+	type BenchmarkingConfig = runtime_common::StakingBenchmarkingConfig;
 	type WeightInfo = weights::pallet_staking::WeightInfo<Runtime>;
 }
 
