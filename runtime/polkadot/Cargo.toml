@@ -98,6 +98,12 @@ separator = "0.4.1"
 [build-dependencies]
 substrate-wasm-builder = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.15-1" }
 
+[dependencies.sudo]
+default-features = false
+git = "https://github.com/paritytech/substrate"
+package = "pallet-sudo"
+branch = "polkadot-v0.9.15-1"
+
 [features]
 default = ["std"]
 no_std = []
@@ -163,10 +169,11 @@ std = [
 	"beefy-primitives/std",
 	"pallet-mmr-primitives/std",
 	"frame-election-provider-support/std",
-  "pallet-xcm/std",
-  "xcm/std",
+	"pallet-xcm/std",
+	"xcm/std",
 	"xcm-executor/std",
 	"xcm-builder/std",
+	"sudo/std"
 ]
 runtime-benchmarks = [
 	"runtime-common/runtime-benchmarks",
