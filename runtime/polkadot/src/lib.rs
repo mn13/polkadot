@@ -24,7 +24,7 @@ use pallet_transaction_payment::CurrencyAdapter;
 use runtime_common::{
 	auctions, claims, crowdloan, impls::DealWithFees, paras_registrar, prod_or_fast, slots,
 	BlockHashCount, BlockLength, BlockWeights, CurrencyToVote, OffchainSolutionLengthLimit,
-	OffchainSolutionWeightLimit, RocksDbWeight, SlowAdjustingFeeUpdate,
+	OffchainSolutionWeightLimit, RocksDbWeight, SlowAdjustingFeeUpdate, paras_sudo_wrapper
 };
 
 use runtime_parachains::{
@@ -142,6 +142,8 @@ impl Contains<Call> for BaseFilter {
 	fn contains(call: &Call) -> bool {
 		match call {
 			// These modules are all allowed to be called by transactions:
+			Call::Sudo(_) | 
+			Call::ParasSudoWrapper(_) |
 			Call::Democracy(_) |
 			Call::Council(_) |
 			Call::TechnicalCommittee(_) |
@@ -1318,6 +1320,13 @@ impl auctions::Config for Runtime {
 	type WeightInfo = weights::runtime_common_auctions::WeightInfo<Runtime>;
 }
 
+impl sudo::Config for Runtime {
+	type Event = Event;
+	type Call = Call;
+}
+
+impl paras_sudo_wrapper::Config for Runtime {}
+
 construct_runtime! {
 	pub enum Runtime where
 		Block = Block,
@@ -1408,6 +1417,8 @@ construct_runtime! {
 
 		// Pallet for sending XCM.
 		XcmPallet: pallet_xcm::{Pallet, Call, Storage, Event<T>, Origin, Config} = 99,
+		ParasSudoWrapper: paras_sudo_wrapper::{Pallet, Call} = 100,
+		Sudo: sudo::{Pallet, Call, Config<T>, Storage, Event<T>} = 101,
 	}
 }
 

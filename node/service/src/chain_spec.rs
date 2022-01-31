@@ -388,6 +388,7 @@ fn polkadot_staging_testnet_config_genesis(wasm_binary: &[u8]) -> polkadot::Gene
 		},
 		paras: Default::default(),
 		xcm_pallet: Default::default(),
+		sudo: polkadot::SudoConfig { key: Some(initial_authorities[0].0.clone()) },
 	}
 }
 
@@ -768,6 +769,7 @@ fn kusama_staging_testnet_config_genesis(wasm_binary: &[u8]) -> kusama::GenesisC
 		gilt: Default::default(),
 		paras: Default::default(),
 		xcm_pallet: Default::default(),
+		sudo: kusama::SudoConfig { key: Some(initial_authorities[0].0.clone()) },
 	}
 }
 
@@ -1338,6 +1340,7 @@ pub fn polkadot_testnet_genesis(
 		},
 		paras: Default::default(),
 		xcm_pallet: Default::default(),
+		sudo: polkadot::SudoConfig { key: Some(initial_authorities[0].0.clone()) },
 	}
 }
 
@@ -1425,6 +1428,7 @@ pub fn kusama_testnet_genesis(
 		gilt: Default::default(),
 		paras: Default::default(),
 		xcm_pallet: Default::default(),
+		sudo: kusama::SudoConfig { key: Some(initial_authorities[0].0.clone()) },
 	}
 }
 
